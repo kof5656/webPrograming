@@ -1,0 +1,23 @@
+{
+  "name": "project",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Hanga <kof5656@naver.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "font-awesome": "fontawesome#^4.7.0",
+    "bourbon": "^4.2.7"
+  }
+}
