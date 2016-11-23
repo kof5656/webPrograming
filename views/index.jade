@@ -1,5 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  form#form-task.form-inline
+    table
+      tr
+        th 도시
+        th 인원
+        th(rowspan = "2")
+          button.td-form.btn.btn-primary.btn-lg(type='button') 숙소 검색
+      tr
+        td
+          input.td-form(type='text', id='city', name='city', placeholder='도시')
+        td
+          select.td-form(name='people')
+            option(value='1인', selected) 1인
+            option(value='2인') 2인
+            option(value='3인') 3인
+            option(value='4인 이상') 4인 이상
+        
+        
