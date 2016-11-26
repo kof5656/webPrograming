@@ -5,26 +5,65 @@ body {
 a {
   color: #00B7FF;}
 
-#city {
+#text-city {
   height: 30px;}
 
-.btn-lg{
-  padding: 5px 0px;}
-
 #form-task{
-  width: 100%;}
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;}
+
+#pause.off{
+  display: none;}
+#pause.on{
+  left: 0;
+  top: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  background-color: rgba(0, 0, 0, 0.5);}
+
+#form-signup{
+  left: 0;
+  position: fixed;
+  padding: 30px;
+  z-index: 2001;
+  background-color: #eee;}
+  #form-signup.off{
+    display: none;}
+  #form-signup.on{
+    margin-left: 15%;
+    width: 70%;}
+
 
 table{
   width: 100%;
   margin: 10px 0px;
   border: 3px solid #CCC;}
-  tr, th, td{
-    padding: 5px;}
+  th, td{
+    padding: 5px;
+    width: auto;}
   .td-form{
     font-size: 1.2em;
     width: 100%;}
 
+.btn-lg{
+  padding: 5px 0px;
+  width: 100px;}
+
+.td-button{
+  width: 120px;}
+
 select{
   height: 1.8em;
   margin: 0px;
+}
+
+@media (min-width: 768px)
+{
+  #form-signup.on{
+    margin-left: 30%;
+    width: 40%;
+    z-index: 2001;}
 }

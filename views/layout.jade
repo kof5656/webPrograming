@@ -12,9 +12,11 @@ html(lang='ko')
     script(src='/bower_components/jquery/dist/jquery.js')
     script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
   body
+    #pause.off
     block top-nav
       include ./includes/topnav
     block hero-unit
+      include ./includes/signup
     .main-content
       if flashMessages
         each texts, type in flashMessages
