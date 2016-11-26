@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var flash = require('connect-flash');
+var session = require('express-session');
 var mongoose   = require('mongoose');
 
 var app = express();
@@ -15,7 +17,6 @@ var app = express();
 if (app.get('env') === 'development') {
   app.locals.pretty = true;
 }
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,13 +34,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
+app.use(session({
+  secret: 'fasdkjhfjkslhviuxhiozvnjnwemrnmzmxcnvjljoiwer',
+  resave: false,
+  saveUninitialized: true
+  }));
+app.use(flash());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
 
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.session.user;
+  res.locals.flashMessages = req.flash();
+  next();
+});
+
+
 app.use('/', index);
-// app.use('/users', users);
+app.use('/users', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
