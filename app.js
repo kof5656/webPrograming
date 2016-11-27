@@ -5,13 +5,20 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var session = require('express-session');
 var mongoose   = require('mongoose');
+var passport = require('passport');
+var configAuth = require('./config/auth');
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+var hosts = require('./routes/hosts');
+var routeAuth = require('./routes/auth');
 
 var app = express();
+
 
 // pretty mode
 if (app.get('env') === 'development') {
@@ -21,6 +28,8 @@ if (app.get('env') === 'development') {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.locals.moment = require('moment');
 
 // mongodb connect
 mongoose.connect('mongodb://jihanga:as1203@ds139847.mlab.com:39847/web');
@@ -32,28 +41,32 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 
 app.use(session({
-  secret: 'fasdkjhfjkslhviuxhiozvnjnwemrnmzmxcnvjljoiwer',
   resave: false,
-  saveUninitialized: true
-  }));
+  saveUninitialized: true,
+  secret: 'fasdkjhfjkslhviuxhiozvnjnwemrnmzmxcnvjljoiwer'
+}));
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(function(req, res, next) {
-  res.locals.currentUser = req.session.user;
+  res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
 });
 
+configAuth(passport);
 
 app.use('/', index);
 app.use('/users', users);
-
+app.use('/hosts', hosts);
+routeAuth(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,27 @@
+block signin
+  #form-signin.off
+  
+    form.form-signin(action='/signin', method='POST')
+      .form-group
+        label(for='email', class='sr-only') Email address
+        input.form-control(
+          type='email',  id='email', name='email', 
+          placeholder='Email', required, autofocus
+        )
+      .form-group
+        label(for='password', class='sr-only') Password
+        input.form-control(
+          type='password', id='password', name='password',
+          placeholder='Password', required, autofocus
+        )
+      button.btn.btn-lg.btn-primary.btn-block(type='submit') 로그인
+      | 
+      a.btn.btn-info.btn-lg.btn-block(href='/auth/facebook')
+        .fa.fa-facebook.fa-lg
+        | &nbsp; &nbsp;Signin with Facebook
+      hr
+      a.btn.btn-default.btn-mini.signback 뒤로
+      | 
+      a.btn.btn-default.btn-mini.pos-right.signup 가입하기
+      
+script(src='/javascripts/sign.js')
