@@ -7,7 +7,7 @@ function needAuth(req, res, next) {
     next();
   } else {
     req.flash('danger', '로그인이 필요합니다.');
-    res.redirect('/signin');
+    res.redirect('/');
   }
 }
 
@@ -47,7 +47,7 @@ router.get('/', needAuth, function(req, res, next) {
       return next(err);
     }
     res.render('users/index', {users: users});
-  });
+  });search
 });
 
 router.get('/new', function(req, res, next) {
