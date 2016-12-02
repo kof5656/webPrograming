@@ -11,6 +11,9 @@
     #navbar.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
         if (currentUser) 
+          if(currentUser.manager)
+            li
+              a.manage(href='/users/#{currentUser._id}/manage') Management
           li
             a Profile
           li
@@ -20,4 +23,3 @@
             a.signin Signin
           li
             a.signup Signup
-          

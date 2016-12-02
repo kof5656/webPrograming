@@ -30,7 +30,7 @@ function validateForm(form, options) {
   }
 
   if (form.password !== form.password_confirmation) {
-    return '비밀번호가 일치하지 않습니다.';
+    return '새 비밀번호가 일치하지 않습니다.';
   }
 
   if (form.password.length < 6) {
@@ -47,11 +47,29 @@ router.get('/', needAuth, function(req, res, next) {
       return next(err);
     }
     res.render('users/index', {users: users});
-  });search
+  });
 });
 
-router.get('/new', function(req, res, next) {
-  res.render('users/new', {messages: req.flash()});
+
+router.get('/:id/manage', function(req, res, next) {
+  //유저 관리
+  User.findById(req.params.id, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+
+    if(!user.manager){
+      req.flash('danger', '관리자가 아닙니다.');
+      return res.redirect('/');
+    }else{
+      User.find({}, function(err, users) {
+        if (err) {
+          return next(err);
+        }
+        res.render('users/manage', {users: users});
+      });
+    }
+  });
 });
 
 router.get('/:id/edit', function(req, res, next) {
@@ -64,7 +82,7 @@ router.get('/:id/edit', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  var err = validateForm(req.body);
+  var err = validateForm(req.body,{needPassword: true});
   if (err) {
     req.flash('danger', err);
     return res.redirect('back');
@@ -78,8 +96,7 @@ router.put('/:id', function(req, res, next) {
       req.flash('danger', '존재하지 않는 사용자입니다.');
       return res.redirect('back');
     }
-
-    if (user.password !== req.body.current_password) {
+    if (user.validatePassword(user.password)) {
       req.flash('danger', '현재 비밀번호가 일치하지 않습니다.');
       return res.redirect('back');
     }
@@ -95,7 +112,7 @@ router.put('/:id', function(req, res, next) {
         return next(err);
       }
       req.flash('success', '사용자 정보가 변경되었습니다.');
-      res.redirect('/users');
+      res.redirect('/');
     });
   });
 });
@@ -106,7 +123,7 @@ router.delete('/:id', function(req, res, next) {
       return next(err);
     }
     req.flash('success', '사용자 계정이 삭제되었습니다.');
-    res.redirect('/users');
+    res.redirect('back');
   });
 });
 
@@ -135,7 +152,7 @@ router.post('/', function(req, res, next) {
     }
     var newUser = new User({
       name: req.body.name,
-      email: req.body.email,
+      email: req.body.email
     });
     newUser.password = newUser.generateHash(req.body.password);
 
