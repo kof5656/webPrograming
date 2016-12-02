@@ -13,7 +13,7 @@
         if (currentUser) 
           if(currentUser.manager)
             li
-              a.manage(href='/users/#{currentUser._id}/manage') Management
+              a(href='/users/#{currentUser._id}/manage') Management
           li
             a Profile
           li
