@@ -9,6 +9,7 @@ var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var session = require('express-session');
 var mongoose   = require('mongoose');
+mongoose.Promise = global.Promise;
 var passport = require('passport');
 var configAuth = require('./config/auth');
 

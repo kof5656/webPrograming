@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+  .container
+    h1.page-header= 상세정보
+    p
+      b by #{host.master_email}
+      span at #{moment(host.createdAt).format('YYYY-MM-DD')}
+    .col-sm-8
+      .well(style='white-space:pre;')= host.content
+      a.btn.btn-default(href='/hosts/#{currentUser.id}') 목록
+      a.btn.btn-primary.pos-right(href='/hosts/reservation/#{host.id}') 신청하기
+      br
+      if(host.master_id == currentUser.id)
+        table.table.table-bordered
+          thead 신청자목록
+            tr
+              th 이름
+              th 체크인
+              th 체크아웃
+              th 숙박인원
+              th 코멘트
+              th 수락
+          tbody
+            each reservation in reservations
+              if(reservation.confirm == 0)
+                tr
+                  td= reservation.master_name
+                  td= moment(reservation.checkin).format('YYYY-MM-DD')
+                  td= moment(reservation.checkout).format('YYYY-MM-DD')
+                  td= reservation.people
+                  td= reservation.comment
+                  td
+                    a.btn.btn-xs.btn-default(href='/hosts/reservation/OK/#{reservation.id}?_method=POST') 수락
+                    a.btn.btn-xs.btn-default(href='/hosts/reservation/NO/#{reservation.id}?_method=POST') 거절
+    .col-sm-4
+      table
+        tbody
+          tr
+            th 도시
+          tr
+            td.pos-right= host.location
+          tr
+            th 주소
+          tr
+            td.pos-right= host.address
+          tr
+            th 가격
+          tr
+            td.pos-right= host.price
+    
+    

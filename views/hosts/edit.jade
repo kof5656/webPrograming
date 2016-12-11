@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+  .container
+    if (host.id)
+      h1.page-header 수정하기
+    else
+      h1.page-header 호스팅하기
+    form(action = (host.id) ? "/hosts/#{host.id}?_method=PUT" : "/hosts/#{currentUser.id}", method='POST')
+      .form-group
+        label(for='location') 도시
+        input.form-control(
+          type='String',  id='location', name='location', 
+          placeholder='도시', value=host.location, required, autofocus
+        )
+      .form-group
+        label(for='address') 주소
+        input.form-control(
+          type='String', id='address', name='address',
+          placeholder='주소', value=host.address, required, autofocus
+        )
+      .form-group
+        label(for='detail') 세부사항
+        input.form-control(
+          type='String', id='detail', name='detail',
+          placeholder='세부사항', value=host.detail, required, autofocus
+        )
+      .form-group
+        label(for='price') 가격(1박 기준)
+        input.form-control(
+          type='Number', id='price', name='price',
+          placeholder='가격', value=host.price, required, autofocus
+        )
+      .form-group
+        label(for='content') 자세한 내용
+        textarea.form-control(
+          id='content', rows='4', name='content', 
+          placeholder='자세한 내용', value=host.content, required, autofocus
+        )= host.content
+      button.btn.btn-lg.btn-primary.btn-block(type='submit') 완료
+      hr
+      a.btn.btn-default.btn-mini.hostback 뒤로

@@ -23,6 +23,9 @@ module.exports = function(passport) {
         if (err) {
           return done(err);
         }
+        if (user.facebook.id){
+          return done(null, false, req.flash('danger', '페이스북 로그인으로 이용해주세요'));
+        }
 
         if (!user) {
           return done(null, false, req.flash('danger', '존재하지 않는 사용자입니다.'));

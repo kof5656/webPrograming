@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+  .container
+    h1.page-header List
+    //- | total #{pagination.numPosts} posts  
+    
+    table.table-bordered
+      thead
+        tr
+          th 등록자 이름
+          th 장소
+          th 등록 날짜
+          th 세부사항
+          th 가격(1박 기준)
+          th 수정
+      tbody
+        each host in hosts
+          tr
+            td= host.master_name
+            td
+              a(href='/hosts/info/#{host.id}')= host.location
+            td= moment(host.createdAt).format('YYYY-MM-DD')
+            td= host.detail
+            td= host.price
+            td
+              if(currentUser.id == host.master_id) 
+                a.btn.btn-xs.btn-default(href='/hosts/edit/#{host.id}') 수정
+              if(currentUser.manager)
+                a.btn.btn-xs.btn-default(href='/hosts/#{host.id}?_method=DELETE') 삭제
+
+    a.btn.btn-primary.pos-right(href='/hosts/new') 호스팅하기
+
+    //- nav.center
+    //-   ul.pagination
+    //-     li(class=pagination.firstPage.cls): a(href=pagination.firstPage.url)
+    //-       span(aria-hidden="true") &laquo;
+    //-     li(class=pagination.prevPage.cls): a(href=pagination.prevPage.url)
+    //-       span(aria-hidden="true") &lt;
+    //-     each page in pagination.pages
+    //-       li(class=page.cls)
+    //-         a(href=page.url): span= page.text
+    //-     li(class=pagination.nextPage.cls): a(href=pagination.nextPage.url)
+    //-       span(aria-hidden="true") &gt;
+    //-     li(class=pagination.lastPage.cls): a(href=pagination.lastPage.url)
+    //-       span(aria-hidden="true") &raquo;

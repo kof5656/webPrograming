@@ -15,7 +15,7 @@
             li
               a(href='/users/#{currentUser._id}/manage') Management
           li
-            a Profile
+            a(href='/hosts/#{currentUser._id}') Host
           li
             a(href='/signout') Signout
         else
@@ -23,3 +23,5 @@
             a.signin Signin
           li
             a.signup Signup
+
+script(src='/javascripts/sign.js')

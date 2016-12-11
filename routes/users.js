@@ -51,9 +51,13 @@ router.get('/', needAuth, function(req, res, next) {
 });
 
 
-router.get('/:id/manage', function(req, res, next) {
+router.get('/:id/manage', needAuth,function(req, res, next) {
   //유저 관리
   User.findById(req.params.id, function(err, user) {
+    if(!user){
+      req.flash('danger', '잘못된 접근입니다.');
+      return res.redirect('/');
+    }
     if (err) {
       return next(err);
     }
@@ -72,7 +76,7 @@ router.get('/:id/manage', function(req, res, next) {
   });
 });
 
-router.get('/:id/edit', function(req, res, next) {
+router.get('/:id/edit', needAuth,function(req, res, next) {
   User.findById(req.params.id, function(err, user) {
     if (err) {
       return next(err);
@@ -117,15 +121,6 @@ router.put('/:id', function(req, res, next) {
   });
 });
 
-router.delete('/:id', function(req, res, next) {
-  User.findOneAndRemove({_id: req.params.id}, function(err) {
-    if (err) {
-      return next(err);
-    }
-    req.flash('success', '사용자 계정이 삭제되었습니다.');
-    res.redirect('back');
-  });
-});
 
 router.get('/:id', function(req, res, next) {
   User.findById(req.params.id, function(err, user) {
@@ -149,23 +144,43 @@ router.post('/', function(req, res, next) {
     if (user) {
       req.flash('danger', '동일한 이메일 주소가 이미 존재합니다.');
       return res.redirect('back');
-    }
-    var newUser = new User({
-      name: req.body.name,
-      email: req.body.email
-    });
-    newUser.password = newUser.generateHash(req.body.password);
+    } else {
+      User.findOne({name: req.body.name}, function(err, user) {
+        if (err) {
+          return next(err);
+        }
+        if (user) {
+          req.flash('danger', '동일한 이름이 이미 존재합니다.');
+          return res.redirect('back');
+        }
 
-    newUser.save(function(err) {
-      if (err) {
-        next(err);
-      } else {
-        req.flash('success', '가입이 완료되었습니다. 로그인 해주세요.');
-        res.redirect('/');
-      }
-    });
+        var newUser = new User({
+          name: req.body.name,
+          email: req.body.email
+        });
+        newUser.password = newUser.generateHash(req.body.password);
+
+        newUser.save(function(err) {
+          if (err) {
+            next(err);
+          } else {
+            req.flash('success', '가입이 완료되었습니다. 로그인 해주세요.');
+            res.redirect('/');
+          }
+        });
+      });
+    }
   });
 });
 
+router.delete('/:id', function(req, res, next) {
+  User.findOneAndRemove({_id: req.params.id}, function(err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash('success', '사용자 계정이 삭제되었습니다.');
+    res.redirect('back');
+  });
+});
 
 module.exports = router;

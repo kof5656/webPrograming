@@ -1,5 +1,6 @@
 body {
-  padding: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;}
 
 a {
@@ -8,10 +9,10 @@ a {
 #text-city {
   height: 30px;}
 
-#form-task{
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;}
+#main-bg{
+  width: 100%;
+  height: auto;
+  display: block;}
 
 #pause.off{
   display: none;}
@@ -24,15 +25,16 @@ a {
   z-index: 2000;
   background-color: rgba(0, 0, 0, 0.5);}
 
-#form-signup, #form-signin{
+#form-signup, #form-signin, #form-hosting{
   left: 0;
+  top: 50px;
   position: fixed;
   padding: 30px;
   z-index: 2001;
   background-color: #eee;}
-  #form-signup.off, #form-signin.off{
+  #form-signup.off, #form-signin.off, #form-hosting.off{
     display: none;}
-  #form-signup.on, #form-signin.on{
+  #form-signup.on, #form-signin.on, #form-hosting.on{
     margin-left: 15%;
     width: 70%;}
 
@@ -60,7 +62,10 @@ select{
 
 @media (min-width: 768px)
 {
-  #form-signup.on, #form-signin.on{
+  body{
+    padding: 50px;
+  }
+  #form-signup.on, #form-signin.on #form-hosting.on{
     margin-left: 30%;
     width: 40%;
     z-index: 2001;}
