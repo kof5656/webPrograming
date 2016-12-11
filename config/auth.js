@@ -46,7 +46,6 @@ module.exports = function(passport) {
   passport.use(new FacebookStrategy({
     clientID : '388514868206380',
     clientSecret : 'b1974045f227e190c0535236c7308643',
-    // callbackURL : 'http://localhost:3000/auth/facebook/callback',
     callbackURL : 'https://afternoon-wildwood-20314.herokuapp.com/auth/facebook/callback',
     profileFields : ["emails", "displayName", "name", "photos"]
   }, function(token, refreshToken, profile, done) {
@@ -69,15 +68,17 @@ module.exports = function(passport) {
               return done(err);
             }
             if (!user) {
-              user = new User({
-                name: profile.displayName,
-                email: profile.displayName + "@facebook.com"
-              });
-            }
-            if(profile.emails){
-              user.facebook.email = profile.emails[0].value
-            } else if(!profile.emails){
-              user.facebook.email = profile.displayName + "@facebook.com";
+              if(profile.emails){
+                user = new User({
+                  name: profile.displayName,
+                  email: profile.emails[0].value
+                });
+              } else if(!profile.emails){
+                user = new User({
+                  name: profile.displayName,
+                  email: profile.displayName + "@facebook.com"
+                });
+              }
             }
             user.facebook.id = profile.id;
             user.facebook.token = profile.token;
