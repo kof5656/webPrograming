@@ -1,5 +1,7 @@
 var express = require('express'),
+    Host = require('../models/Host');
     User = require('../models/User');
+    Reservation = require('../models/Reservation');
 var router = express.Router();
 
 function needAuth(req, res, next) {
@@ -130,6 +132,16 @@ router.get('/:id', function(req, res, next) {
     res.render('users/show', {user: user});
   });
 });
+
+router.get('/info/:id',needAuth , function(req, res, next) {
+  Reservation.find({master_id: req.params.id}, function(err, reservation) {
+    if (err) {
+      return next(err);
+    }
+    res.render('users/info', {reservations: reservation});
+  });
+});
+
 
 router.post('/', function(req, res, next) {
   var err = validateForm(req.body, {needPassword: true});

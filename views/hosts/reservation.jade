@@ -7,21 +7,27 @@ block content
       form(action = "/hosts/reservation/#{currentUser.id}", method='POST')
         .form-group
           label(for='checkin') checkin 날짜
-          input.form-control(
-            type='date',  id='checkin', name='checkin', 
-            placeholder='checkin 날짜', required, autofocus
-          )
+          .input-group.date#checkin
+            input.form-control(
+              type='text', name='checkin', 
+              placeholder='checkin 날짜',value = date, required, autofocus
+            )
+            span.input-group-addon
+              span.glyphicon.glyphicon-calendar
         .form-group
           label(for='checkout') checkout 날짜
-          input.form-control(
-            type='date', id='checkout', name='checkout',
-            placeholder='checkout 날짜', required, autofocus
-          )
+          .input-group.date#checkout
+            input.form-control(
+              type='text', name='checkout',
+              placeholder='checkout 날짜', required, autofocus
+            )
+            span.input-group-addon
+              span.glyphicon.glyphicon-calendar
         .form-group
           label(for='detail') 인원
           input.form-control(
             type='Number', id='people', name='people',
-            placeholder='인원', required, autofocus
+            placeholder='인원', value = '1', required, autofocus, min='1'
           )
         .form-group
           label(for='comment') 코멘트
@@ -33,6 +39,10 @@ block content
           input.form-control(
             type='String', id='host_id', name='host_id'
             value=host.id, style='display:none'
+            )
+          input.form-control(
+            type='String', id='host_address', name='host_address'
+            value=host.address, style='display:none'
             )
         button.btn.btn-lg.btn-primary.btn-block(type='submit') 완료
       hr
@@ -52,3 +62,26 @@ block content
             th 가격
           tr
             td.pos-right= host.price
+    
+  script(type="text/javascript").
+    $(function () {
+      var checkind = new Date();
+      checkind.setDate(checkind.getDate()+1)
+      var checkoutd = new Date();
+      checkoutd.setDate(checkoutd.getDate()+2)
+      $('#checkin').datetimepicker({
+        format: 'LL',
+        defaultDate: checkind
+      });
+      $('#checkout').datetimepicker({
+        format: 'LL',
+        defaultDate: checkoutd
+      });
+      $('#checkin').data("DateTimePicker").minDate(checkind);
+      $('#checkout').data("DateTimePicker").minDate(checkoutd);
+      $('#checkin').on("dp.change", function (e) {
+          var temp = new Date(e.date);
+          temp.setDate(temp.getDate()+1);
+          $('#checkout').data("DateTimePicker").minDate(temp);
+      });
+    });

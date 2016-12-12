@@ -8,7 +8,12 @@
         span.icon-bar
       a.navbar-brand(href='/') 
         i.fa.fa-home
+        
     #navbar.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        if (currentUser) 
+          li
+            a(href='/users/info/#{currentUser._id}') my list
       ul.nav.navbar-nav.navbar-right
         if (currentUser) 
           if(currentUser.manager)

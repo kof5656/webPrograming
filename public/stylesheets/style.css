@@ -65,7 +65,7 @@ select{
   body{
     padding: 50px;
   }
-  #form-signup.on, #form-signin.on #form-hosting.on{
+  #form-signup.on, #form-signin.on, #form-hosting.on{
     margin-left: 30%;
     width: 40%;
     z-index: 2001;}

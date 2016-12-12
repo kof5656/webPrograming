@@ -4,35 +4,39 @@ block content
   .container
     h1.page-header= 상세정보
     p
-      b by #{host.master_email}
+      b by #{host.master_name} // #{host.master_email}
+      br
       span at #{moment(host.createdAt).format('YYYY-MM-DD')}
     .col-sm-8
       .well(style='white-space:pre;')= host.content
       a.btn.btn-default(href='/hosts/#{currentUser.id}') 목록
       a.btn.btn-primary.pos-right(href='/hosts/reservation/#{host.id}') 신청하기
       br
-      if(host.master_id == currentUser.id)
-        table.table.table-bordered
-          thead 신청자목록
-            tr
-              th 이름
-              th 체크인
-              th 체크아웃
-              th 숙박인원
-              th 코멘트
-              th 수락
-          tbody
-            each reservation in reservations
+      table.table.table-bordered
+        thead 신청자목록(방의 주인이 아닐경우 자신이 신청한 항목만 보입니다.)
+          tr
+            th 이름
+            th 체크인
+            th 체크아웃
+            th 숙박인원
+            th 코멘트
+            th 수락
+        tbody
+          each reservation in reservations
+            if(host.master_id == currentUser.id || reservation.master_id == currentUser.id)
               if(reservation.confirm == 0)
                 tr
                   td= reservation.master_name
-                  td= moment(reservation.checkin).format('YYYY-MM-DD')
-                  td= moment(reservation.checkout).format('YYYY-MM-DD')
+                  td= reservation.checkin
+                  td= reservation.checkout
                   td= reservation.people
                   td= reservation.comment
                   td
-                    a.btn.btn-xs.btn-default(href='/hosts/reservation/OK/#{reservation.id}?_method=POST') 수락
-                    a.btn.btn-xs.btn-default(href='/hosts/reservation/NO/#{reservation.id}?_method=POST') 거절
+                    if(host.master_id == currentUser.id)
+                      a.btn.btn-xs.btn-default(href='/hosts/reservation/OK/#{reservation.id}?_method=POST') 수락
+                      a.btn.btn-xs.btn-default(href='/hosts/reservation/NO/#{reservation.id}?_method=POST') 거절
+                    if(reservation.master_id == currentUser.id)
+                      a.btn.btn-xs.btn-default(href='/hosts/reservation/CANCEL/#{reservation.id}?_method=POST') 예약취소
     .col-sm-4
       table
         tbody

@@ -12,6 +12,7 @@ var mongoose   = require('mongoose');
 mongoose.Promise = global.Promise;
 var passport = require('passport');
 var configAuth = require('./config/auth');
+var moment = require('moment');
 
 var index = require('./routes/index');
 var users = require('./routes/users');

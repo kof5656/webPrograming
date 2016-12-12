@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  .container
+    h1.page-header= 신청정보
+    table.table.table-bordered
+      thead 신청목록
+        tr
+          th 주소
+          th 체크인
+          th 체크아웃
+          th 숙박인원
+          th 코멘트
+          th 예약현황
+      tbody
+        each reservation in reservations
+          if(reservation.master_id == currentUser.id)
+            tr
+              td
+                a(href='/hosts/info/#{reservation.host_id}')= reservation.host_address
+              td= reservation.checkin
+              td= reservation.checkout
+              td= reservation.people
+              td= reservation.comment
+              td
+                if(reservation == 1)
+                  span 예약완료
+                if(reservation == 0)
+                  span 예약대기중
+                if(reservation == -1)
+                  span 예약거절
+                a.btn.btn-xs.btn-default(href='/hosts/reservation/CANCEL/#{reservation.id}?_method=POST') 예약취소

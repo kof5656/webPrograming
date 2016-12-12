@@ -182,6 +182,17 @@ router.post('/reservation/NO/:id', needAuth, function(req, res, next) {
     });
   });
 });
+//예약 취소
+router.post('/reservation/CANCEL/:id', needAuth, function(req, res, next) {
+  Reservation.findOneAndRemove({_id: req.params.id}, function(err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash('success', '예약취소가 완료되었습니다.');
+    res.redirect('back');
+  });
+});
+
 
 //예약
 router.post('/reservation/:id', needAuth, function(req, res, next) {
@@ -195,10 +206,7 @@ router.post('/reservation/:id', needAuth, function(req, res, next) {
     var chout = req.body.checkout;
     dateArray = chout.split("-");
     var checkoutdate = new Date(dateArray[0], Number(dateArray[1])-1, dateArray[2]);
-    if(req.body.people <= 0){
-      req.flash('danger', '인원 다시 확인해주세요');
-      res.redirect('/hosts/info/' + req.body.host_id);
-    }else if(checkindate.getTime() < new Date().getTime() ||
+    if(checkindate.getTime() < new Date().getTime() ||
     checkoutdate.getTime() < checkindate.getTime()){
       req.flash('danger', '날짜를 다시 확인해주세요');
       res.redirect('/hosts/info/' + req.body.host_id);
@@ -208,7 +216,8 @@ router.post('/reservation/:id', needAuth, function(req, res, next) {
         checkout: req.body.checkout,
         people: req.body.people,
         comment: req.body.comment,
-        host_id: req.body.host_id
+        host_id: req.body.host_id,
+        host_address: req.body.host_address
       });
 
       newReservation.master_id = user.id;
