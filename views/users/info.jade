@@ -23,10 +23,10 @@ block content
               td= reservation.people
               td= reservation.comment
               td
-                if(reservation == 1)
+                if(reservation.confirm == 1)
                   span 예약완료
-                if(reservation == 0)
+                if(reservation.confirm == 0)
                   span 예약대기중
-                if(reservation == -1)
+                if(reservation.confirm == -1)
                   span 예약거절
-                a.btn.btn-xs.btn-default(href='/hosts/reservation/CANCEL/#{reservation.id}?_method=POST') 예약취소
+                a.btn.btn-xs.btn-default.pos-right(href='/hosts/reservation/CANCEL/#{reservation.id}?_method=POST') 예약취소
