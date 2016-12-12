@@ -6,6 +6,8 @@ block content
     table.table.table-bordered
       thead 신청목록
         tr
+          th 제목
+          th 도시
           th 주소
           th 체크인
           th 체크아웃
@@ -17,7 +19,9 @@ block content
           if(reservation.master_id == currentUser.id)
             tr
               td
-                a(href='/hosts/info/#{reservation.host_id}')= reservation.host_address
+                a(href='/hosts/info/#{reservation.host_id}')= reservation.host_title
+              td= reservation.host_location
+              td= reservation.host_address
               td= reservation.checkin
               td= reservation.checkout
               td= reservation.people

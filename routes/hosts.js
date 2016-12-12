@@ -99,6 +99,7 @@ router.post('/:id', function(req, res, next) {
     }
 
     var newHost = new Host({
+      title: req.body.title,
       location: req.body.location,
       address: req.body.address,
       detail: req.body.detail,

@@ -44,6 +44,14 @@ block content
             type='String', id='host_address', name='host_address'
             value=host.address, style='display:none'
             )
+          input.form-control(
+            type='String', id='host_location', name='host_location'
+            value=host.location, style='display:none'
+            )
+          input.form-control(
+            type='String', id='host_title', name='host_title'
+            value=host.title, style='display:none'
+            )
         button.btn.btn-lg.btn-primary.btn-block(type='submit') 완료
       hr
       a.btn.btn-default.btn-mini.hostback 뒤로

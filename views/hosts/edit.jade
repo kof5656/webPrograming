@@ -8,6 +8,12 @@ block content
       h1.page-header 호스팅하기
     form(action = (host.id) ? "/hosts/#{host.id}?_method=PUT" : "/hosts/#{currentUser.id}", method='POST')
       .form-group
+        label(for='title') 제목
+        input.form-control(
+          type='String',  id='title', name='title', 
+          placeholder='제목', value=host.location, required, autofocus
+        )
+      .form-group
         label(for='location') 도시
         input.form-control(
           type='String',  id='location', name='location', 
@@ -29,7 +35,7 @@ block content
         label(for='price') 가격(1박 기준)
         input.form-control(
           type='Number', id='price', name='price',
-          placeholder='가격', value=host.price, required, autofocus
+          placeholder='가격', value=host.price, required, autofocus, min='0'
         )
       .form-group
         label(for='content') 자세한 내용

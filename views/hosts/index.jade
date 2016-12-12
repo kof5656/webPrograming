@@ -8,8 +8,9 @@ block content
     table.table-bordered
       thead
         tr
+          th 제목
           th 등록자 이름
-          th 장소
+          th 도시
           th 등록 날짜
           th 세부사항
           th 가격(1박 기준)
@@ -17,9 +18,10 @@ block content
       tbody
         each host in hosts
           tr
-            td= host.master_name
             td
-              a(href='/hosts/info/#{host.id}')= host.location
+              a(href='/hosts/info/#{host.id}') #{host.title}
+            td= host.master_name
+            td= host.location
             td= moment(host.createdAt).format('YYYY-MM-DD')
             td= host.detail
             td= host.price
