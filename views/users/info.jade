@@ -2,6 +2,9 @@ extends ../layout
 
 block content
   .container
+    br
+    br
+    a.btn.btn-default.btn-mini(href='/users/#{currentUser._id}?_method=DELETE') 회원탈퇴
     h1.page-header= 신청정보
     table.table.table-bordered
       thead 신청목록
