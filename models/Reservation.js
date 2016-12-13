@@ -5,6 +5,7 @@ var schema = new Schema({
   host_id: {type: String},
   host_address: {type: String},
   host_location: {type: String},
+  host_title: {type: String},
   master_id: {type: String},
   master_name: {type: String},
   master_email: {type: String},

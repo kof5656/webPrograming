@@ -218,7 +218,9 @@ router.post('/reservation/:id', needAuth, function(req, res, next) {
         people: req.body.people,
         comment: req.body.comment,
         host_id: req.body.host_id,
-        host_address: req.body.host_address
+        host_address: req.body.host_address,
+        host_title: req.body.host_title,
+        host_location: req.body.host_location
       });
 
       newReservation.master_id = user.id;
