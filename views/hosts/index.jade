@@ -3,7 +3,13 @@ extends ../layout
 block content
   .container
     h1.page-header List
-    //- | total #{pagination.numPosts} posts  
+    form(action = "/hosts/search", method='POST')
+      select(name="location")
+        each host in hosts
+          option(value="#{host.location}")= host.location
+      button.btn.btn-lg(type='submit') 도시검색
+    br
+    br
     
     table.table-bordered
       thead
@@ -17,18 +23,54 @@ block content
           th 수정
       tbody
         each host in hosts
-          tr
-            td
-              a(href='/hosts/info/#{host.id}') #{host.title}
-            td= host.master_name
-            td= host.location
-            td= moment(host.createdAt).format('YYYY-MM-DD')
-            td= host.detail
-            td= host.price
-            td
-              if(currentUser.id == host.master_id) 
-                a.btn.btn-xs.btn-default(href='/hosts/edit/#{host.id}') 수정
-              if(currentUser.manager)
-                a.btn.btn-xs.btn-default(href='/hosts/#{host.id}?_method=DELETE') 삭제
-
+          if(search == host.location)
+            tr
+              td
+                a(href='/hosts/info/#{host.id}') #{host.title}
+              td= host.master_name
+              td= host.location
+              td= moment(host.createdAt).format('YYYY-MM-DD')
+              td= host.detail
+              td= host.price
+              td
+                if(currentUser.id == host.master_id) 
+                  a.btn.btn-xs.btn-default(href='/hosts/edit/#{host.id}') 수정
+                if(currentUser.manager)
+                  a.btn.btn-xs.btn-default(href='/hosts/#{host.id}?_method=DELETE') 삭제
+          else
+            if(search == "")
+              tr
+                td
+                  a(href='/hosts/info/#{host.id}') #{host.title}
+                td= host.master_name
+                td= host.location
+                td= moment(host.createdAt).format('YYYY-MM-DD')
+                td= host.detail
+                td= host.price
+                td
+                  if(currentUser.id == host.master_id) 
+                    a.btn.btn-xs.btn-default(href='/hosts/edit/#{host.id}') 수정
+                  if(currentUser.manager)
+                    a.btn.btn-xs.btn-default(href='/hosts/#{host.id}?_method=DELETE') 삭제
+          
     a.btn.btn-primary.pos-right(href='/hosts/new') 호스팅하기
+
+  script(type="text/javascript").
+    $(document).ready(function(){
+      var sort = $("select[name='location']>option").sort(  
+        function(a,b) {
+          return a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1; } 
+      );
+      //정렬
+      for( var i = 0; i < sort.length-1; i++ ){
+        if( sort[i].value==sort[i+1].value ){
+         sort.splice(i,1);
+         i--;
+        }
+      }
+      //중복삭제
+      
+      $("select[name='location']").empty();
+      $("select[name='location']").append(sort);
+      $("select[name='location']>option:first").attr("selected","selected");
+    }); 

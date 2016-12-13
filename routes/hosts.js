@@ -17,6 +17,12 @@ router.get('/new', needAuth, function(req, res, next) {
   res.render('hosts/edit',{host : {id : null}});
 });
 
+router.post('/search', needAuth, function(req, res, next) {
+  Host.find({}, function(err, hosts) {
+    res.render('hosts/index',{hosts : hosts, search : req.body.location});
+  });
+});
+
 router.get('/:id', needAuth, function(req, res, next) {
   User.findById(req.params.id, function(err, user) {
     if(!user){
@@ -28,7 +34,7 @@ router.get('/:id', needAuth, function(req, res, next) {
     }
     else{
       Host.find({}, function(err, hosts) {
-      res.render('hosts/index',{hosts : hosts});
+      res.render('hosts/index',{hosts : hosts, search : ""});
       });
     }
   });
