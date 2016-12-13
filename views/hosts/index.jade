@@ -33,9 +33,8 @@ block content
               td= host.detail
               td= host.price
               td
-                if(currentUser.id == host.master_id) 
+                if(currentUser.manager || currentUser.id == host.master_id) 
                   a.btn.btn-xs.btn-default(href='/hosts/edit/#{host.id}') 수정
-                if(currentUser.manager)
                   a.btn.btn-xs.btn-default(href='/hosts/#{host.id}?_method=DELETE') 삭제
           else
             if(search == "")
@@ -48,9 +47,8 @@ block content
                 td= host.detail
                 td= host.price
                 td
-                  if(currentUser.id == host.master_id) 
+                  if(currentUser.manager || currentUser.id == host.master_id) 
                     a.btn.btn-xs.btn-default(href='/hosts/edit/#{host.id}') 수정
-                  if(currentUser.manager)
                     a.btn.btn-xs.btn-default(href='/hosts/#{host.id}?_method=DELETE') 삭제
           
     a.btn.btn-primary.pos-right(href='/hosts/new') 호스팅하기

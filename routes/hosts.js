@@ -75,13 +75,13 @@ router.put('/:id', function(req, res, next) {
     if (err) {
       return next(err);
     }
-
+    
+    host.title = req.body.title;
     host.location = req.body.location;
     host.address = req.body.address;
     host.detail = req.body.detail;
     host.price = req.body.price;
     host.content = req.body.content;
-
 
     host.save(function(err) {
       if (err) {
